@@ -1022,16 +1022,16 @@
                     <a href="https://m7ashr213-cell.github.io/EgyBest/" class="get-now-btn" target="_blank">Get Now</a>
                 </div>
 
-                <!-- App 5 - Zolo Loader -->
+                <!-- App 5 - See Drama -->
                 <div class="app-item">
                     <div class="app-info">
-                        <div class="app-icon pro-badge" style="background-image: url('https://images-bsy2.7723img.cn/attachments/app_upload_icons/2023/12/34349893/172b1a58f4c8d1a895f5ecf3f74b22c8.png')"></div>
+                        <div class="app-icon" style="background-image: url('https://tse2.mm.bing.net/th/id/OIP.fvB-DyJOu2JwgPYGl5i3eQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3')"></div>
                         <div class="app-details">
-                            <h3>Zolo Loader</h3>
-                            <p>PUBG hack tool with advanced features</p>
+                            <h3>See Drama</h3>
+                            <p>Watch Arabic and international dramas</p>
                         </div>
                     </div>
-                    <a href="https://m7ashr213-cell.github.io/Zolo-Loader/" class="get-now-btn" target="_blank">Get Now</a>
+                    <a href="https://m7ashr213-cell.github.io/See-Drama/" class="get-now-btn" target="_blank">Get Now</a>
                 </div>
             </div>
         </section>
@@ -1112,18 +1112,18 @@
                 link: "https://m7ashr213-cell.github.io/EgyBest/",
                 isGeneral: false
             },
-            zolo: {
-                title: "Zolo Loader",
-                description: "PUBG hack tool with advanced features without the need for root",
+            seedrama: {
+                title: "See Drama",
+                description: "Application for watching Arabic and international dramas with premium features",
                 features: [
-                    "لا يحتاج لروت",
-                    "كشف أماكن اللاعبين",
-                    "هيد شوت عالي الدقة",
-                    "ايم بوت للتحكم العالي",
-                    "يوجد مفتاح تفعيل من الموقع"
+                    "اشتراك مدفوع مجاني",
+                    "أعلى جودة متاحة للفيديوهات",
+                    "مجموعة ضخمة من المسلسلات العربية والأجنبية",
+                    "واجهة مستخدم محسنة وسهلة",
+                    "تحديثات مستمرة للمحتوى"
                 ],
-                imageUrl: "https://images-bsy2.7723img.cn/attachments/app_upload_icons/2023/12/34349893/172b1a58f4c8d1a895f5ecf3f74b22c8.png",
-                link: "https://m7ashr213-cell.github.io/Zolo-Loader/",
+                imageUrl: "https://tse2.mm.bing.net/th/id/OIP.fvB-DyJOu2JwgPYGl5i3eQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+                link: "https://m7ashr213-cell.github.io/See-Drama/",
                 isGeneral: false
             }
         };
@@ -1184,48 +1184,23 @@
         // Handle Get Now buttons
         getNowButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                const appName = e.target.getAttribute('data-app');
+                e.preventDefault();
+                const appItem = e.target.closest('.app-item');
+                const appTitle = appItem.querySelector('h3').textContent.toLowerCase().replace(' ', '');
                 
-                if (appName === 'whatsapp') {
-                    // Show download options for WhatsApp
-                    showDownloadModal(appName);
-                } else {
-                    // Show app details for other apps
-                    showAppDetailModal(appName);
+                let appKey;
+                switch(appTitle) {
+                    case 'aneimify': appKey = 'aneimify'; break;
+                    case 'viu': appKey = 'viu'; break;
+                    case 'generaltv': appKey = 'generaltv'; break;
+                    case 'egybest': appKey = 'egybest'; break;
+                    case 'seedrama': appKey = 'seedrama'; break;
+                    default: return;
                 }
+                
+                showAppDetailModal(appKey);
             });
         });
-
-        // Show Download Modal
-        function showDownloadModal(appName) {
-            const app = appData[appName];
-            modalAppTitle.textContent = app.title;
-            modalAppDescription.textContent = app.description;
-            
-            // Clear previous options
-            downloadOptions.innerHTML = '';
-            
-            // Add download options
-            app.options.forEach(option => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'download-option';
-                optionElement.innerHTML = `
-                    <div class="option-info">
-                        <div class="option-icon ${option.icon}">
-                            <i class="${option.iconClass}"></i>
-                        </div>
-                        <div class="option-details">
-                            <h3>${option.name}</h3>
-                            <p>${option.description}</p>
-                        </div>
-                    </div>
-                    <a href="${option.link}" class="download-btn" target="_blank">Download</a>
-                `;
-                downloadOptions.appendChild(optionElement);
-            });
-            
-            downloadModal.classList.add('active');
-        }
 
         // Show App Detail Modal
         function showAppDetailModal(appName) {
@@ -1286,5 +1261,4 @@
         });
     </script>
 </body>
-
 </html>
