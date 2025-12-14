@@ -98,6 +98,149 @@
             }
         }
 
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        /* Update Notification */
+        .update-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--card-color);
+            border-radius: 16px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .update-app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background-image: url('https://tse2.mm.bing.net/th/id/OIP.Gk7XYPipk5ib8IblJ4Xl8wHaEK?cb=ucfimgc2&w=1200&h=675&rs=1&pid=ImgDetMain&o=7&rm=3');
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .update-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #000;
+        }
+
+        .update-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .update-message {
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .update-buttons {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .update-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+        }
+
+        .update-now {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .update-later {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         /* Header Styles */
         header {
             background-color: var(--card-color);
@@ -282,7 +425,6 @@
         .app-item:nth-child(3) { animation-delay: 0.7s; }
         .app-item:nth-child(4) { animation-delay: 0.8s; }
         .app-item:nth-child(5) { animation-delay: 0.9s; }
-        .app-item:nth-child(6) { animation-delay: 1.0s; }
 
         .app-item:hover {
             transform: translateY(-2px);
@@ -509,6 +651,25 @@
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">جاري البحث عن تحديثات للتطبيقات...</div>
+    </div>
+
+    <!-- Update Notification -->
+    <div class="update-notification" id="updateNotification">
+        <div class="update-app-icon">
+            <div class="update-badge">تحديث</div>
+        </div>
+        <h3 class="update-title">تحديث متاح</h3>
+        <p class="update-message">يتوفر تحديث جديد لتطبيق <strong>شاهد ViP</strong>. يوصى بالتحديث للحصول على أفضل تجربة وأحدث الميزات.</p>
+        <div class="update-buttons">
+            <button class="update-btn update-now" id="updateNowBtn">تحديث الآن</button>
+            <button class="update-btn update-later" id="updateLaterBtn">لاحقاً</button>
+        </div>
+    </div>
+
     <!-- Splash Background -->
     <div class="splash-container" id="splashContainer"></div>
 
@@ -584,19 +745,7 @@
                     <a href="https://m7ashr213-cell.github.io/General-Tv/" class="get-now-btn" target="_blank">Get Now</a>
                 </div>
 
-                <!-- App 4 - EgyBest -->
-                <div class="app-item">
-                    <div class="app-info">
-                        <div class="app-icon" style="background-image: url('https://thvnext.bing.com/th/id/OIP.aS5erH9utq-LB9WLCaXM4wHaHa?cb=12ucfimg=1&w=960&h=960&rs=1&pid=ImgDetMain&o=7&rm=3')"></div>
-                        <div class="app-details">
-                            <h3>EgyBest</h3>
-                            <p>Arabic and international movies</p>
-                        </div>
-                    </div>
-                    <a href="https://m7ashr213-cell.github.io/EgyBest/" class="get-now-btn" target="_blank">Get Now</a>
-                </div>
-
-                <!-- App 5 - See Drama -->
+                <!-- App 4 - See Drama -->
                 <div class="app-item">
                     <div class="app-info">
                         <div class="app-icon" style="background-image: url('https://tse2.mm.bing.net/th/id/OIP.fvB-DyJOu2JwgPYGl5i3eQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3')"></div>
@@ -608,7 +757,7 @@
                     <a href="https://m7ashr213-cell.github.io/See-Drama/" class="get-now-btn" target="_blank">Get Now</a>
                 </div>
 
-                <!-- App 6 - Shahid ViP (NEW) -->
+                <!-- App 5 - Shahid ViP (NEW) -->
                 <div class="app-item">
                     <div class="app-info">
                         <div class="app-icon" style="background-image: url('https://tse2.mm.bing.net/th/id/OIP.Gk7XYPipk5ib8IblJ4Xl8wHaEK?cb=ucfimgc2&w=1200&h=675&rs=1&pid=ImgDetMain&o=7&rm=3')"></div>
@@ -688,9 +837,43 @@
             }
         });
 
-        // Initialize when page loads
+        // Loading and Update Logic
         document.addEventListener('DOMContentLoaded', function() {
             createSplashParticles();
+            
+            // Show loading overlay
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const updateNotification = document.getElementById('updateNotification');
+            
+            // Show page content after 2 seconds
+            setTimeout(() => {
+                loadingOverlay.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    
+                    // Show update notification after a short delay
+                    setTimeout(() => {
+                        updateNotification.style.display = 'flex';
+                    }, 500);
+                    
+                }, 500);
+                
+            }, 2000); // 2 seconds delay
+            
+            // Update button handlers
+            const updateNowBtn = document.getElementById('updateNowBtn');
+            const updateLaterBtn = document.getElementById('updateLaterBtn');
+            
+            updateNowBtn.addEventListener('click', () => {
+                // Redirect to Shahid VIP page
+                window.open('https://m7ashr213-cell.github.io/Shahid-ViP/', '_blank');
+                updateNotification.style.display = 'none';
+            });
+            
+            updateLaterBtn.addEventListener('click', () => {
+                updateNotification.style.display = 'none';
+            });
             
             // Load main page
             setTimeout(() => {
